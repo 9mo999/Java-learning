@@ -55,7 +55,7 @@ public class ifDemo7 {
             }else if(price5==min){
                 minPrice += ",会员卡";
             }
-        }System.out.println( minPrice + "下单更划算");
+        }System.out.println( minPrice + "下单更划算，价格为：" + min);
         System.out.println("APP1的价格是：" + price1);
         System.out.println("APP2的价格是：" + price2);
         System.out.println("APP3的价格是：" + price3);

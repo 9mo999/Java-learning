@@ -25,7 +25,7 @@ public class ifDemo9 {
              else if (price < 100)discountPrice = 30;
              else if (price < 200)discountPrice = 50;
              else discountPrice = 100;
-                discountPrice = 100;
+
 
         }else {
             System.out.println("输入的价格有误");
