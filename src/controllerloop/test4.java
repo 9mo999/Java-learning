@@ -5,9 +5,9 @@ import java.util.Scanner;
 public class test4 {
     public static void main(String[] args) {
         Scanner scanner = new Scanner(System.in);
-        System.out.print("请选择图形：\nA.正三角形\nB.倒三角形");
+        System.out.println("请选择图形：\nA.正三角形\nB.倒三角形");
         String choice = scanner.next();
-        if (!choice.equals("A") && !choice.equals("B")) {
+        while (!choice.equals("A") && !choice.equals("B")) {
             System.out.print("输入无效，请重新输入：");
             choice = scanner.next();
         }
