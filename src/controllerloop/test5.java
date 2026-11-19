@@ -1,181 +1,114 @@
 package controllerloop;
+
 import java.util.Scanner;
 
-
 public class test5 {
+    private static final Scanner SC = new Scanner(System.in);
+
     public static void main(String[] args) {
-        Scanner sc = new Scanner(System.in);
-        System.out.println("请选择图形：\nA.平行四边形\nB.梯形\nC.空心四边形\nD.菱形");
-        String choice = sc.next();
-        while (!choice.equals("A") && !choice.equals("B") && !choice.equals("C") && !choice.equals("D")) {
+        do {
+            System.out.println("请选择图形：\nA.平行四边形\nB.梯形\nC.空心四边形\nD.菱形");
+            switch (readChoice("ABCD")) {
+                case "A" -> drawParallelogram();
+                case "B" -> drawTrapezoid();
+                case "C" -> drawHollowSquare();
+                case "D" -> drawDiamond();
+            }
+            System.out.println("\n请问是否继续运行？\nA.继续\nB.退出");
+        } while (readChoice("AB").equals("A"));
+        System.out.println("程序已退出");
+        SC.close();
+    }
+
+    /* ================= 输入工具：所有校验都收敛到这两个方法，绝不崩溃 ================= */
+
+    /** 读取一个选项：只接受 valid 中的单个字符（不区分大小写，统一返回大写） */
+    private static String readChoice(String valid) {
+        if (!SC.hasNext()) exitOnEof();
+        String s = SC.next().trim().toUpperCase();
+        while (s.length() != 1 || valid.indexOf(s.charAt(0)) < 0) {
             System.out.print("输入无效，请重新输入：");
-            choice = sc.next();
+            s = SC.next().trim().toUpperCase();
         }
-        switch (choice) {
-            case "A":
-            System.out.println("请选择平行四边形的绘制方式：\nA.正平行四边形\nB.倒平行四边形");
-            String choice2 = sc.next();
-            while (!choice2.equals("A") && !choice2.equals("B")) {
-                System.out.print("输入无效，请重新输入：");
-                choice2 = sc.next();
-            }
-            System.out.println("请输入底边长度(大于0的整数)：");
-            while(!sc.hasNextInt()) {
-                System.out.print("输入无效，请重新输入：");
-                sc.next();
-            }
-            int base = sc.nextInt();
-            while (base <= 0) {
-                System.out.print("输入无效，请重新输入：");
-                base = sc.nextInt();
-            }
-            System.out.println("请输入高(大于0的整数)：");
-            while(!sc.hasNextInt()) {
-                System.out.print("输入无效，请重新输入：");
-                sc.next();
-            }
-            int height = sc.nextInt();
-            while (height <= 0) {
-                System.out.print("输入无效，请重新输入：");
-                height = sc.nextInt();
-            }
-            if (choice2.equals("A")) {
-                for(int i = 0; i < height; i++){
-                    for(int j = i; j < height - 1; j++)System.out.print(" ");
-                    for(int k = 0; k < base; k++)System.out.print("* ");
-                    System.out.println();
-                }
+        return s;
+    }
+
+    /** 读取一个落在 [min, max] 区间的整数：非数字、太小、太大一律重试 */
+    private static int readInt(String prompt, int min, int max) {
+        System.out.println(prompt);
+        while (true) {
+            if (!SC.hasNext()) exitOnEof();
+            if (SC.hasNextInt()) {
+                int v = SC.nextInt();
+                if (v >= min && v <= max) return v;
             } else {
-                for(int i = 0; i < height; i++){
-                    for(int j = 0; j < i; j++)System.out.print(" ");
-                    for(int k = 0; k < base; k++)System.out.print("* ");
-                    System.out.println();
-                }
-            }break;
-        case "B":
-            System.out.println("请选择梯形的绘制方式：\nA.正梯形\nB.倒梯形");
-            String choice3 = sc.next();
-            while (!choice3.equals("A") && !choice3.equals("B")) {
-                System.out.print("输入无效，请重新输入：");
-                choice3 = sc.next();
+                SC.next(); // 丢弃非法输入
             }
-            System.out.println("请输入下底长度(大于4的整数)：");
-            while(!sc.hasNextInt()) {
-                System.out.print("输入无效，请重新输入：");
-                sc.next();
-            }
-            int base1 = sc.nextInt();
-            while (base1 <= 4) {
-                System.out.print("输入无效，请重新输入：");
-                base1 = sc.nextInt();
-            }
-            System.out.println("请输入高(大于0且小于等于下底长度一半的整数)：");
-            while(!sc.hasNextInt()) {
-                System.out.print("输入无效，请重新输入：");
-                sc.next();
-            }
-            int height1 = sc.nextInt();
-            while (height1 <= 0 || height1 > base1 / 2) {
-                System.out.print("输入无效，请重新输入：");
-                height1 = sc.nextInt();
-            }
-            if (choice3.equals("A")) {
-                int b = base1-(height1-1)*2;
-                for(int i = 0; i < height1; i++){
-                    for(int j = i; j < height1 - 1; j++)System.out.print(" ");
-                    for(int k = 0; k < b; k++)System.out.print("*");
-                    b += 2;
-                    System.out.println();
-                }
-            } else {
-                for(int i = 0; i < height1; i++){
-                    for(int j = 0; j < i; j++)System.out.print(" ");
-                    for(int k = 0; k < base1; k++)System.out.print("*");
-                    base1 -= 2;
-                    System.out.println();
-                }
-            }
-        break;
-        case "C":
-            System.out.println("请输入边长（大于0的整数）：");
-            while(!sc.hasNextInt()) {
-                System.out.print("输入无效，请重新输入：");
-                sc.next();
-            }
-            int side = sc.nextInt();
-            while (side <= 0) {
-                System.out.print("输入无效，请重新输入：");
-                side = sc.nextInt();
-            }for (int i = 0; i < side; i++) {
-                for (int j = 0; j < side; j++) {
-                    if (i == 0 || i == side - 1 || j == 0 || j == side - 1) System.out.print("* ");
-                    else System.out.print("  ");
-                }
-                System.out.println();
-            }
-        break;
-        case "D":
-            System.out.println("请选择菱形的绘制方式：\nA.实心菱形\nB.空心菱形");
-            String choice4 = sc.next();
-            while (!choice4.equals("A") && !choice4.equals("B")) {
-                System.out.print("输入无效，请重新输入：");
-                choice4 = sc.next();
-            }
-            System.out.println("请输入边长（大于0的整数）：");
-            while(!sc.hasNextInt()) {
-                System.out.print("输入无效，请重新输入：");
-                sc.next();
-            }
-            int side2 = sc.nextInt();
-            while (side2 <= 0) {
-                System.out.print("输入无效，请重新输入：");
-                side2 = sc.nextInt();
-            }
-            if (choice4.equals("A")) {
-                int a = 1;
-                for (int i = 0; i < side2; i++){
-                    for (int j = 0; j < side2-1-i; j++)System.out.print(" ");
-                    for (int j = 0; j < a; j++)System.out.print("*");
-                    a+=2;
-                    System.out.println();
-                }
-                for (int i = 0; i < side2-1; i++){
-                    for (int j = 0; j < i+1; j++)System.out.print(" ");
-                    for (int k = 0; k < (side2-1-i)*2-1; k++)System.out.print("*");
-                    System.out.println();
-                }
-            } else {
-                int a = 1;
-                for (int i = 0; i < side2; i++){
-                    for (int j = 0; j < side2-1-i; j++)System.out.print(" ");
-                    for (int k = 0; k < a; k++){
-                        if (k==0||k==a-1) System.out.print("*");
-                        else System.out.print(" ");
-                    }
-                    a+=2;
-                    System.out.println();
-                }
-                for (int i = 0; i < side2-1; i++){
-                    for (int j = 0; j < i+1; j++)System.out.print(" ");
-                    int w = (side2-1-i)*2 - 1;
-                    for (int k = 0; k < w; k++){
-                        if (k==0||k==w-1) System.out.print("*");
-                        else System.out.print(" ");
-                    }
-                    System.out.println();
-                }
-            }
-        }
-        System.out.println("请问是否继续运行？\nA.继续\nB.退出");
-        String choice5 = sc.next();
-        while (!choice5.equals("A") && !choice5.equals("B")) {
             System.out.print("输入无效，请重新输入：");
-            choice5 = sc.next();
         }
-        if (choice5.equals("A")) {
-            main(args);
-        } else {
-            System.out.println("程序已退出");
+    }
+
+    /** 输入流已结束（Ctrl+Z / 管道耗尽）：优雅退出，避免 NoSuchElementException */
+    private static void exitOnEof() {
+        System.out.println("\n输入结束，程序退出");
+        SC.close();
+        System.exit(0);
+    }
+
+    private static int readInt(String prompt, int min) {
+        return readInt(prompt, min, Integer.MAX_VALUE);
+    }
+
+    /* ================= 绘图工具 ================= */
+
+    /** 打印一行：spaces 个空格 + stars 个星号；hollow 为 true 时只画首尾两个星号 */
+    private static void printRow(int spaces, int stars, boolean hollow) {
+        for (int j = 0; j < spaces; j++) System.out.print(" ");
+        for (int k = 0; k < stars; k++) {
+            System.out.print(!hollow || k == 0 || k == stars - 1 ? "*" : " ");
         }
+        System.out.println();
+    }
+
+    private static void drawParallelogram() {
+        System.out.println("请选择平行四边形的绘制方式：\nA.正平行四边形\nB.倒平行四边形");
+        boolean upright = readChoice("AB").equals("A");
+        int base = readInt("请输入底边长度(大于0的整数)：", 1);
+        int height = readInt("请输入高(大于0的整数)：", 1);
+        for (int i = 0; i < height; i++) {
+            // 正：第 0 行在最右、逐行左移；倒：第 0 行在最左、逐行右移
+            printRow(upright ? height - 1 - i : i, base, false);
+        }
+    }
+
+    private static void drawTrapezoid() {
+        System.out.println("请选择梯形的绘制方式：\nA.正梯形\nB.倒梯形");
+        boolean upright = readChoice("AB").equals("A");
+        int base = readInt("请输入下底长度(大于4的整数)：", 5);
+        int height = readInt("请输入高(大于0且小于等于下底长度一半的整数)：", 1, base / 2);
+        for (int i = 0; i < height; i++) {
+            int spaces = upright ? height - 1 - i : i;
+            // 正梯形：顶行最窄 base-(height-1)*2，每行加 2；倒梯形：顶行就是 base，每行减 2
+            int stars = upright ? base - (height - 1 - i) * 2 : base - i * 2;
+            printRow(spaces, stars, false);
+        }
+    }
+
+    private static void drawHollowSquare() {
+        int side = readInt("请输入边长（大于0的整数）：", 1);
+        for (int i = 0; i < side; i++) {
+            boolean isBorderLine = i == 0 || i == side - 1;
+            printRow(0, side, !isBorderLine);
+        }
+    }
+
+    private static void drawDiamond() {
+        System.out.println("请选择菱形的绘制方式：\nA.实心菱形\nB.空心菱形");
+        boolean solid = readChoice("AB").equals("A");
+        int side = readInt("请输入边长（大于0的整数）：", 1);
+        // 上半部分（含最长行）：第 i 行 = (side-1-i) 个空格 + (2i+1) 个星号
+        for (int i = 0; i < side; i++) printRow(side - 1 - i, 2 * i + 1, !solid);
+        // 下半部分：与上半部分第 0 ~ side-2 行完全对称
+        for (int i = side - 2; i >= 0; i--) printRow(side - 1 - i, 2 * i + 1, !solid);
     }
 }
